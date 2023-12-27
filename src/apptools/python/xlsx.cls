@@ -17,8 +17,8 @@ ClassMethod test() As %Status
  set exec="##class(apptools.python.xlsx).MarkRed(.%AppLogInfoVal, .%AppLogInfoCol, .%AppLogInfoHead, .%AppLogInfoTemp)"
 #;  do ##class(apptools.python.xlsx).gn2xlsx(gn,.format,..#DATADIRECTORY_"___gn2xlsx*.xlsx","Title "_sql,,,,exec)
  set format("freeze")="B4" ;freeze
- do ##class(apptools.python.xlsx).sql2xlsx(sql,.format,..#DATADIRECTORY_"sql2xlsx*.xlsx")
- quit $$$OK
+ do ##class(apptools.python.xlsx).sql2xlsx(sql,.format,..#DATADIRECTORY_"titanic.xlsx")
+ return $$$OK
 }
 
 ClassMethod sql2xlsx(sql, format = "", file As %String = "/home/irisowner/dev/data/sample-py-*.xlsx", title = "")
@@ -86,7 +86,22 @@ ClassMethod sql2xlsx(sql, format = "", file As %String = "/home/irisowner/dev/da
 	if file["*" set file=$replace(file,"*","-"_$zd($h,3)_"_"_$tr($zt($p($h,",",2),1),":"))
 	write !,"Save into "_file_" rows: "_count
 	do wb.save(file)
-	q $GET(count)
+	do ..toPDF("titanic")
+	return $GET(count)
+}
+
+ClassMethod toPDF(file As %String) As %Status [ Language = python ]
+{
+  import pandas as pd
+  from csv2pdf import convert
+  PATH = '/home/irisowner/dev/data/'
+  PATH_TO_XLSX = PATH+file+'.xlsx'
+  PATH_TO_CSV = PATH+file+'.csv'
+  PATH_TO_PDF = PATH+file+'.pdf'
+  
+  read_file = pd.read_excel (PATH_TO_XLSX)
+  read_file.to_csv (PATH_TO_CSV, index = None, header=True)
+  convert(PATH_TO_CSV , PATH_TO_PDF)
 }
 
 /// set gn="^||tmp",format="n,s150,,,,,,,,d," 
