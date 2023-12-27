@@ -1,5 +1,11 @@
 {
     "objectscript.conn": {
-        "active": true
-    }
+        "active": true,
+        "ns": "irisapp",
+        "docker-compose": {
+            "service": "iris",
+            "internalPort": 52773
+        }
+    },
+    "git.ignoreLimitWarning": true
 }
