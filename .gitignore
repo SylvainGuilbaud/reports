@@ -2,13 +2,3 @@
 **/.DS_Store
 **/*.tar
 **/*.gz
-/docs
-/volumes
-/data/db
-/data/SC*
-/data/**/archive
-/data/**/out
-**/~$*
-/data/EP
-/data/Demo/loan/inarchive*
-/data/Demo/loan/out
