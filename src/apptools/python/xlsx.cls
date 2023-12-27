@@ -5,8 +5,9 @@ Class apptools.python.xlsx
 Parameter DATADIRECTORY = "/home/irisowner/dev/data/";
 
 /// d ##class(apptools.python.xlsx).test()
-ClassMethod test() As %Status
+ClassMethod test(name As %String = "titanicTest") As %Status
 {
+ set name=name_$INCREMENT(^RunAppTest(name))
  set sql="select * FROM dc_demo.titanic"
 #;  set sql="select name,sex,age FROM dc_demo.titanic"
  set gn="^||tmp",format=",n,n,n,n,s5,s5,s40,s5,s50" 
@@ -17,7 +18,8 @@ ClassMethod test() As %Status
  set exec="##class(apptools.python.xlsx).MarkRed(.%AppLogInfoVal, .%AppLogInfoCol, .%AppLogInfoHead, .%AppLogInfoTemp)"
 #;  do ##class(apptools.python.xlsx).gn2xlsx(gn,.format,..#DATADIRECTORY_"___gn2xlsx*.xlsx","Title "_sql,,,,exec)
  set format("freeze")="B4" ;freeze
- do ##class(apptools.python.xlsx).sql2xlsx(sql,.format,..#DATADIRECTORY_"titanic.xlsx")
+ do ##class(apptools.python.xlsx).sql2xlsx(sql,.format,..#DATADIRECTORY_name_".xlsx")
+ do ..toPDF(name)
  return $$$OK
 }
 
@@ -86,7 +88,7 @@ ClassMethod sql2xlsx(sql, format = "", file As %String = "/home/irisowner/dev/da
 	if file["*" set file=$replace(file,"*","-"_$zd($h,3)_"_"_$tr($zt($p($h,",",2),1),":"))
 	write !,"Save into "_file_" rows: "_count
 	do wb.save(file)
-	do ..toPDF("titanic")
+	
 	return $GET(count)
 }
 
