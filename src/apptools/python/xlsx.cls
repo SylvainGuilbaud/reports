@@ -2,7 +2,7 @@
 Class apptools.python.xlsx
 {
 
-Parameter DATADIRECTORY = "/home/irisowner/dev/data/";
+Parameter DATADIRECTORY = "/home/irisowner/dev/data/files/";
 
 /// d ##class(apptools.python.xlsx).test()
 ClassMethod test(name As %String = "titanicTest") As %Status
@@ -96,7 +96,7 @@ ClassMethod toPDF(file As %String) As %Status [ Language = python ]
 {
   import pandas as pd
   from csv2pdf import convert
-  PATH = '/home/irisowner/dev/data/'
+  PATH = '/home/irisowner/dev/data/files/'
   PATH_TO_XLSX = PATH+file+'.xlsx'
   PATH_TO_CSV = PATH+file+'.csv'
   PATH_TO_PDF = PATH+file+'.pdf'

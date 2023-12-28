@@ -5,10 +5,30 @@ services:
       context: .
       dockerfile: Dockerfile
     restart: always
+    container_name: iris-report
+    hostname: iris-report
     ports:
       - 1972
-      - 55038:52773
+      - 55039:52773
       - 53773
       - 55030:5000
     volumes:
       - ./:/home/irisowner/dev
+  webgateway:
+    init: true
+    hostname: webgateway
+    container_name: webgateway
+    depends_on:
+      - iris
+    image: containers.intersystems.com/intersystems/webgateway:latest-cd-linux-arm64
+    ports:
+    - 8883:443
+    - 8882:80
+    environment:
+      - ISC_DATA_DIRECTORY=/webgateway
+      - IRIS_USER=CSPsystem
+      - IRIS_PASSWORD=SYS
+      - ISC_CSP_CONF_FILE=/webgateway/CSP.conf
+      - ISC_CSP_INI_FILE=/webgateway/CSP.ini
+    volumes:
+      - "./webgateway:/webgateway"
